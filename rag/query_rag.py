@@ -10,11 +10,20 @@ client = OpenAI()
 INDEX_PATH = "data/vector.index"
 CHUNKS_PATH = "data/chunks.pkl"
 
+from embeddings.generate_embeddings import create_faiss_index
+
 def load_index():
+    # If index doesn't exist, create it
+    if not os.path.exists(INDEX_PATH) or not os.path.exists(CHUNKS_PATH):
+        print("Index not found. Creating embeddings...")
+        create_faiss_index()
+
     index = faiss.read_index(INDEX_PATH)
     with open(CHUNKS_PATH, "rb") as f:
         chunks = pickle.load(f)
+
     return index, chunks
+
 
 def embed_query(query):
     response = client.embeddings.create(
