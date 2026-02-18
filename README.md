@@ -98,3 +98,26 @@ AI-cloud-Rag-pipeline/
 ```bash
 git clone https://github.com/harshitakoppaka/AI-cloud-Rag-pipeline.git
 cd AI-cloud-Rag-pipeline
+---
+
+## 👩‍💻 Author
+
+Harshita Koppaka  
+Computer Science Student
+
+---
+
+## 🚀 Future Improvements
+
+- Display retrieval similarity scores for transparency  
+- Support multi-document conversational memory  
+- Integrate a persistent vector database (Pinecone / Weaviate / Chroma)  
+- Store uploaded documents in AWS S3  
+- Add user authentication and role-based access  
+- Implement CI/CD pipeline for automated deployments  
+- Add monitoring and logging (CloudWatch / Prometheus)  
+- Optimize chunking strategy using semantic splitting  
+- Add evaluation metrics for retrieval quality  
+- Improve scalability using container orchestration (ECS / Kubernetes)
+
+
