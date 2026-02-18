@@ -51,7 +51,7 @@ def embed_query(query):
     return np.array(response.data[0].embedding).astype("float32")
 
 
-def ask_question(question, top_k=3):
+def ask_question(question, chat_history=None, top_k=3):
 
     index, chunks = load_index()
 
@@ -61,18 +61,26 @@ def ask_question(question, top_k=3):
     retrieved_chunks = [chunks[i] for i in indices[0]]
     context = "\n\n".join(retrieved_chunks)
 
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a cloud architecture assistant. Answer only using the provided context."
+        }
+    ]
+
+    # Add previous conversation
+    if chat_history:
+        messages.extend(chat_history)
+
+    # Add new user question with retrieved context
+    messages.append({
+        "role": "user",
+        "content": f"Context:\n{context}\n\nQuestion: {question}"
+    })
+
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a cloud architecture assistant. Answer only using the provided context."
-            },
-            {
-                "role": "user",
-                "content": f"Context:\n{context}\n\nQuestion: {question}"
-            }
-        ]
+        messages=messages
     )
 
     final_answer = response.choices[0].message.content

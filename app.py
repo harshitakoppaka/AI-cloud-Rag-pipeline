@@ -30,7 +30,11 @@ if prompt := st.chat_input("Ask a cloud architecture question..."):
     # Generate response
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            answer, retrieved_chunks = ask_question(prompt)
+            answer, retrieved_chunks = ask_question(
+    prompt,
+    chat_history=st.session_state.messages
+)
+
 
         st.markdown(answer)
 
