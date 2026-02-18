@@ -1,4 +1,4 @@
-# ☁️ Cloud Architecture RAG Assistant
+# ☁️ AI Cloud Architecture RAG Assistant
 
 🔗 **Live App:**  
 https://ai-cloud-rag-pipeline-8he2klpk9j6yu3rarifrwk.streamlit.app/
