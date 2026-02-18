@@ -1,0 +1,2 @@
+Cloud security includes IAM least privilege, network segmentation, encryption in transit and at rest, and monitoring.
+Best practices: use IAM roles, MFA, VPC security groups, NACLs, KMS for encryption, and CloudTrail for auditing.

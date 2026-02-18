@@ -1,36 +1,62 @@
-import pandas as pd
-import numpy as np
 import faiss
-from sentence_transformers import SentenceTransformer
-from pathlib import Path
+import numpy as np
+import os
+import pickle
+from openai import OpenAI
+from dotenv import load_dotenv
+from ingestion.ingest_data import load_documents
+from processing.chunk_text import chunk_text
 
-def generate_embeddings():
-    # Load processed data
-    data_path = Path("data/sample_flights.csv")
-    df = pd.read_csv(data_path)
+# Load environment variables
+load_dotenv()
 
-    # Create text (same as processing step)
-    texts = df.apply(
-        lambda row: f"Flight {row.flight_id} by {row.airline} was delayed due to {row.delay_reason} for {row.delay_minutes} minutes.",
-        axis=1
-    ).tolist()
+# Debug: Check if API key is loading
+print("API KEY LOADED:", os.getenv("OPENAI_API_KEY"))
 
-    # Load embedding model
-    model = SentenceTransformer("all-MiniLM-L6-v2")
+# Initialize OpenAI client
+client = OpenAI()
 
-    # Generate embeddings
-    embeddings = model.encode(texts)
+INDEX_PATH = "data/vector.index"
+CHUNKS_PATH = "data/chunks.pkl"
 
-    # Create FAISS index
+def create_faiss_index():
+
+    print("Loading documents...")
+    documents = load_documents()
+    print(f"Loaded {len(documents)} documents successfully.")
+
+    print("Chunking documents...")
+    all_chunks = []
+    for doc in documents:
+        chunks = chunk_text(doc)
+        all_chunks.extend(chunks)
+
+    print(f"Total chunks created: {len(all_chunks)}")
+
+    print("Generating embeddings...")
+    embeddings = []
+
+    for chunk in all_chunks:
+        response = client.embeddings.create(
+            model="text-embedding-3-small",
+            input=chunk
+        )
+        embeddings.append(response.data[0].embedding)
+
+    embeddings = np.array(embeddings).astype("float32")
+
+    print("Building FAISS index...")
     dimension = embeddings.shape[1]
     index = faiss.IndexFlatL2(dimension)
-    index.add(np.array(embeddings))
+    index.add(embeddings)
 
-    # Save index
-    faiss.write_index(index, "data/vector.index")
+    print("Saving index and chunks...")
+    faiss.write_index(index, INDEX_PATH)
 
-    print("✅ Embeddings generated and FAISS index saved")
-    print(f"Total vectors: {index.ntotal}")
+    with open(CHUNKS_PATH, "wb") as f:
+        pickle.dump(all_chunks, f)
+
+    print("FAISS index created successfully.")
 
 if __name__ == "__main__":
-    generate_embeddings()
+    create_faiss_index()

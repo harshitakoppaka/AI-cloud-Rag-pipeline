@@ -1,5 +1,0 @@
-flight_id,airline,delay_reason,delay_minutes
-F101,Delta,Weather,45
-F102,United,Technical Issue,60
-F103,American,Crew Delay,30
-F104,Southwest,Air Traffic,50

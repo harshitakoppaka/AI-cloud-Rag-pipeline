@@ -1,0 +1,3 @@
+High availability in cloud architecture is achieved through redundancy, load balancing, and multi-AZ deployment.
+Common patterns include active-active setups, failover strategies, and health checks.
+Services such as Elastic Load Balancer, Auto Scaling, and managed databases with multi-AZ replication support HA.

@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.pyc
+data/vector.index
+data/chunks.pkl

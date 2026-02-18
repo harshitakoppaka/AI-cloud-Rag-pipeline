@@ -1,0 +1,4 @@
+AWS Auto Scaling automatically adjusts compute capacity to maintain performance and optimize cost.
+It works with EC2 Auto Scaling groups and scaling policies such as target tracking, step scaling, and scheduled scaling.
+CloudWatch metrics trigger scaling actions based on CPU utilization, request count, or custom metrics.
+Best practices include using multiple Availability Zones, setting health checks, and defining scaling cooldown periods.
