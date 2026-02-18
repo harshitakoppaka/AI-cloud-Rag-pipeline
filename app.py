@@ -1,7 +1,6 @@
 import streamlit as st
 from rag.query_rag import ask_question
 
-# Page configuration
 st.set_page_config(
     page_title="Cloud Architecture RAG Assistant",
     page_icon="☁️",
@@ -10,31 +9,30 @@ st.set_page_config(
 
 st.title("Cloud Architecture RAG Assistant")
 
-st.write("Ask a cloud architecture question:")
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-# User input
-user_input = st.text_input(
-    "Enter your question:",
-    placeholder="What services support high availability in AWS?"
-)
+# Display previous messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-# Submit button
-if st.button("Submit"):
+# Chat input box
+if prompt := st.chat_input("Ask a cloud architecture question..."):
 
-    if user_input.strip():
+    # Add user message to history
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Generate response
+    with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            answer, retrieved_chunks = ask_question(user_input)
+            answer, retrieved_chunks = ask_question(prompt)
 
-        st.markdown("### Answer:")
-        st.write(answer)
+        st.markdown(answer)
 
-        st.markdown("---")
-        st.markdown("### Retrieved Context")
-
-        for i, chunk in enumerate(retrieved_chunks, 1):
-            st.markdown(f"**Chunk {i}:**")
-            st.write(chunk)
-
-    else:
-        st.warning("Please enter a question.")
+    # Save assistant message
+    st.session_state.messages.append({"role": "assistant", "content": answer})
