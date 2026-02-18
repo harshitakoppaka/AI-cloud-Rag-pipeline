@@ -1,60 +1,100 @@
-# AI Cloud RAG Pipeline – Cloud Architecture Knowledge Assistant
+# ☁️ Cloud Architecture RAG Assistant
 
-This project implements a **Retrieval-Augmented Generation (RAG)** system that enables intelligent querying of **cloud architecture documentation** using **FAISS vector search** and **OpenAI GPT**.
-
-It demonstrates how embeddings and semantic retrieval can be integrated into a cloud-style pipeline to build a context-aware knowledge assistant for system design and architecture documents.
-
----
-
-## Project Overview
-
-The system allows users to place cloud architecture documents (PDF or TXT) into the `data/` folder and ask natural language questions such as:
-
-- How does auto-scaling work in this architecture?
-- What services are used for high availability?
-- What security mechanisms are implemented?
-- How is fault tolerance handled?
-
-The pipeline retrieves the most relevant document sections and generates grounded answers using GPT.
+🔗 **Live App:**  
+https://ai-cloud-rag-pipeline-8he2klpk9j6yu3rarifrwk.streamlit.app/
 
 ---
 
-## Architecture Flow
+## 🚀 Overview
 
-1. **Document Ingestion**  
-   Load cloud architecture PDFs or text files from the `data/` directory.
+Cloud Architecture RAG Assistant is an end-to-end Retrieval-Augmented Generation (RAG) system built with Python, OpenAI embeddings, FAISS vector search, and Streamlit.
 
-2. **Chunking**  
-   Split documents into smaller chunks to improve retrieval accuracy.
+The application allows users to:
 
-3. **Embedding Generation**  
-   Generate embeddings for each chunk using OpenAI (`text-embedding-3-small`).
+- Ask cloud architecture questions
+- Upload PDF documents
+- Retrieve semantically relevant context
+- Generate accurate answers using an LLM
+- Interact through a clean chat-style interface
 
-4. **Vector Storage (FAISS)**  
-   Store embeddings in a FAISS index for fast similarity search.
-
-5. **Query Retrieval**  
-   Embed the user’s question, retrieve the top-k most relevant chunks from FAISS.
-
-6. **Answer Generation (GPT)**  
-   Provide retrieved context to GPT (`gpt-4o-mini`) to generate a grounded response.
+This project demonstrates production-style AI system design using modular architecture and real vector search.
 
 ---
 
-## Tech Stack
+## 📸 Application Preview
 
-- Python  
-- OpenAI Embeddings (`text-embedding-3-small`)  
-- OpenAI GPT (`gpt-4o-mini`)  
-- FAISS (vector similarity search)  
-- PyPDF2 (PDF ingestion)  
-- NumPy  
+![App Screenshot](screenshot.png)
 
 ---
 
-## Setup
+## 🧠 How It Works
 
-### 1) Install dependencies
+1. **Document Ingestion**
+   - Upload PDF
+   - Extract text
+   - Chunk content into smaller segments
+
+2. **Embedding Generation**
+   - Convert chunks into vector embeddings using OpenAI
+
+3. **Vector Storage**
+   - Store embeddings in FAISS index
+
+4. **Query Processing**
+   - Convert user question into embedding
+   - Perform similarity search in FAISS
+
+5. **Answer Generation**
+   - Pass retrieved context to GPT model
+   - Generate final response grounded in retrieved content
+
+---
+
+## 🏗 Architecture Structure
+AI-cloud-Rag-pipeline/
+│
+├── app.py # Streamlit frontend
+├── requirements.txt
+├── README.md
+│
+├── api/
+├── ingestion/
+├── embeddings/
+├── processing/
+├── rag/
+└── data/
+
+---
+
+## 🛠 Tech Stack
+
+- Python
+- OpenAI API
+- FAISS
+- Streamlit
+- NumPy
+- PyPDF2
+- Docker (optional)
+- AWS deployment (optional)
+
+---
+
+## 💡 Features
+
+- Semantic document retrieval
+- Vector similarity search
+- Chat-style interface
+- PDF upload support
+- Automatic FAISS index creation
+- Streamlit Cloud deployment
+- Modular production-ready structure
+
+---
+
+## ⚙️ Local Setup
+
+### 1. Clone the repository
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/harshitakoppaka/AI-cloud-Rag-pipeline.git
+cd AI-cloud-Rag-pipeline
