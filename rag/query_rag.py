@@ -52,22 +52,15 @@ def embed_query(query):
 
 
 def ask_question(question, top_k=3):
-    """
-    Retrieve relevant chunks and generate final answer.
-    """
 
     index, chunks = load_index()
 
-    # Embed query
     query_vector = embed_query(question).reshape(1, -1)
-
-    # Search FAISS
     distances, indices = index.search(query_vector, top_k)
 
     retrieved_chunks = [chunks[i] for i in indices[0]]
     context = "\n\n".join(retrieved_chunks)
 
-    # Generate final answer
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -82,11 +75,6 @@ def ask_question(question, top_k=3):
         ]
     )
 
-    return response.choices[0].message.content
+    final_answer = response.choices[0].message.content
 
-
-if __name__ == "__main__":
-    question = input("Ask your cloud architecture question: ")
-    answer = ask_question(question)
-    print("\nAnswer:\n")
-    print(answer)
+    return final_answer, retrieved_chunks

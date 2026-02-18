@@ -23,12 +23,18 @@ if st.button("Submit"):
 
     if user_input.strip():
 
-        # Loading spinner
         with st.spinner("Thinking..."):
-            answer = ask_question(user_input)
+            answer, retrieved_chunks = ask_question(user_input)
 
         st.markdown("### Answer:")
         st.write(answer)
+
+        st.markdown("---")
+        st.markdown("### Retrieved Context")
+
+        for i, chunk in enumerate(retrieved_chunks, 1):
+            st.markdown(f"**Chunk {i}:**")
+            st.write(chunk)
 
     else:
         st.warning("Please enter a question.")
