@@ -5,98 +5,170 @@ https://ai-cloud-rag-pipeline-8he2klpk9j6yu3rarifrwk.streamlit.app/
 
 ---
 
-## 🚀 Overview
-
-Cloud Architecture RAG Assistant is an end-to-end Retrieval-Augmented Generation (RAG) system built with Python, OpenAI embeddings, FAISS vector search, and Streamlit.
-
-The application allows users to:
-
-- Ask cloud architecture questions
-- Upload PDF documents
-- Retrieve semantically relevant context
-- Generate accurate answers using an LLM
-- Interact through a clean chat-style interface
-
-This project demonstrates production-style AI system design using modular architecture and real vector search.
+# AI Cloud RAG Pipeline  
+Retrieval-Augmented Generation (RAG) system with document ingestion, semantic search, and conversational memory.
 
 ---
 
-## 📸 Application Preview
+## Overview
 
-![App Screenshot](screenshot.png)
+This project implements an end-to-end Retrieval-Augmented Generation (RAG) pipeline that allows users to upload documents and query them using a large language model.
 
----
+The system combines:
 
-## 🧠 How It Works
+- Document ingestion and preprocessing  
+- Embedding-based semantic retrieval  
+- Vector similarity search  
+- Context-aware response generation  
+- Conversational memory  
+- Streamlit-based user interface  
 
-1. **Document Ingestion**
-   - Upload PDF
-   - Extract text
-   - Chunk content into smaller segments
-
-2. **Embedding Generation**
-   - Convert chunks into vector embeddings using OpenAI
-
-3. **Vector Storage**
-   - Store embeddings in FAISS index
-
-4. **Query Processing**
-   - Convert user question into embedding
-   - Perform similarity search in FAISS
-
-5. **Answer Generation**
-   - Pass retrieved context to GPT model
-   - Generate final response grounded in retrieved content
+The goal is to build a modular and scalable RAG architecture suitable for AI-powered document intelligence systems.
 
 ---
 
-## 🏗 Architecture Structure
+## Architecture
+
+The pipeline follows a structured flow:
+
+1. **Document Ingestion**  
+   Uploaded PDFs are parsed and split into smaller text chunks.
+
+2. **Embedding Generation**  
+   Each chunk is converted into vector embeddings.
+
+3. **Vector Storage & Retrieval**  
+   Embeddings are stored in a vector database for similarity-based search.
+
+4. **Query Processing (RAG Core)**  
+   - User query is embedded  
+   - Top-k similar document chunks are retrieved  
+   - Retrieved chunks are combined into contextual input  
+
+5. **Response Generation**  
+   The language model generates a context-aware response.
+
+6. **Conversational Memory**  
+   Maintains prior interactions to enable multi-turn conversations.
+
+---
+
+## Project Structure
+
+```
 AI-cloud-Rag-pipeline/
 │
-├── app.py # Streamlit frontend
-├── requirements.txt
-├── README.md
+├── api/                # API logic and RAG orchestration
+├── ingestion/          # Document loading and preprocessing
+├── embeddings/         # Embedding generation utilities
+├── processing/         # Vector store + LLM interaction
+├── rag/                # Core RAG query logic
 │
-├── api/
-├── ingestion/
-├── embeddings/
-├── processing/
-├── rag/
-└── data/
+├── data/               # Sample or uploaded documents
+├── app.py              # Streamlit application entry point
+├── requirements.txt    # Dependencies
+├── Dockerfile          # AWS deployment configuration
+└── README.md
+```
 
 ---
 
-## 🛠 Tech Stack
+## Core RAG Implementation
 
-- Python
-- OpenAI API
-- FAISS
-- Streamlit
-- NumPy
-- PyPDF2
-- Docker (optional)
-- AWS deployment (optional)
+The core retrieval logic is structured through a `RAGPipeline` class responsible for:
 
----
+- Query embedding
+- Semantic retrieval
+- Context construction
+- LLM response generation
 
-## 💡 Features
+Example usage:
 
-- Semantic document retrieval
-- Vector similarity search
-- Chat-style interface
-- PDF upload support
-- Automatic FAISS index creation
-- Streamlit Cloud deployment
-- Modular production-ready structure
+```python
+from rag.rag import RAGPipeline
+
+rag = RAGPipeline(top_k=3)
+response = rag.generate_answer("What are the key findings?")
+print(response)
+```
 
 ---
 
-## ⚙️ Local Setup
+## Features
 
-### 1. Clone the repository
+- Modular pipeline design  
+- Clean separation of ingestion, embedding, retrieval, and generation  
+- Conversational memory support  
+- Streamlit UI for interactive querying  
+- Docker support for deployment  
+- AWS-ready configuration  
 
-```bash
-git clone https://github.com/harshitakoppaka/AI-cloud-Rag-pipeline.git
+---
+
+## Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/your-username/AI-cloud-Rag-pipeline.git
 cd AI-cloud-Rag-pipeline
+```
+
+Create a virtual environment:
+
+```
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
 ---
 
+## Run the Application
+
+Start the Streamlit app:
+
+```
+streamlit run app.py
+```
+
+Upload a document and begin querying through the interface.
+
+---
+
+## Deployment
+
+This project includes a Dockerfile for containerized deployment and is structured for cloud deployment environments such as AWS.
+
+Build Docker image:
+
+```
+docker build -t rag-pipeline .
+```
+
+Run container:
+
+```
+docker run -p 8501:8501 rag-pipeline
+```
+
+---
+
+## Future Improvements
+
+- Add persistent vector database support  
+- Improve streaming response handling  
+- Add authentication and user session management  
+- Optimize chunking and retrieval strategies  
+- Integrate monitoring and logging  
+
+---
+
+## License
+
+This project is for educational and research purposes.
